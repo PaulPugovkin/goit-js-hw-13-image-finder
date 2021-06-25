@@ -12,16 +12,12 @@ refs.gallery.addEventListener('click', onImageClick)
 
 async function onSearch(event) {
     try {
-    searchQuery = event.target.value.trim();
+        searchQuery = event.target.value.trim();
 
-    refs.gallery.innerHTML = '';
-    searchOptions.PAGE_NUM = 1;
- 
-        if (searchQuery.length > 0) {
-            const response = await imageFetch(searchQuery)
-            const result = await renderImage(response.hits)
-            return result;
-        }
+        refs.gallery.innerHTML = '';
+        searchOptions.PAGE_NUM = 1;
+        
+        markupRender();
     } catch (error) {
         console.log(error);
     }
@@ -30,12 +26,7 @@ async function onSearch(event) {
 async function onLoad() {
     try {
         searchOptions.PAGE_NUM += 1;
-
-        if (searchQuery.length > 0) {
-            const response = await imageFetch(searchQuery)
-            const result = await renderImage(response.hits)
-            return result;
-        }
+        markupRender();
     } catch (error) {
         console.log(error);
     }
@@ -50,7 +41,16 @@ function renderImage(resolvedImages) {
 
 function onImageClick(e) {
     if (e.target.className !== 'photo-card-image') return
+
     const instance = basicLightbox.create(`
             <img src="${e.target.dataset.src}" width="800" height="600">
 `).show()
+}
+
+async function markupRender() {
+    if (searchQuery.length > 0) {
+            const response = await imageFetch(searchQuery)
+            const result = await renderImage(response.hits)
+            return result;
+        }
 }
