@@ -10,22 +10,34 @@ refs.searchForm.addEventListener('input', debounce(onSearch, 500))
 refs.loadmoreButton.addEventListener('click', onLoad)
 refs.gallery.addEventListener('click', onImageClick)
 
-function onSearch(event) {
+async function onSearch(event) {
+    try {
     searchQuery = event.target.value.trim();
 
     refs.gallery.innerHTML = '';
     searchOptions.PAGE_NUM = 1;
-
-    if (searchQuery.length > 0) {
-        imageFetch(searchQuery).then(res => renderImage(res.hits))
+ 
+        if (searchQuery.length > 0) {
+            const response = await imageFetch(searchQuery)
+            const result = await renderImage(response.hits)
+            return result;
+        }
+    } catch (error) {
+        console.log(error);
     }
 }
 
-function onLoad() {
-    searchOptions.PAGE_NUM += 1;
+async function onLoad() {
+    try {
+        searchOptions.PAGE_NUM += 1;
 
-    if (searchQuery.length > 0) {
-        imageFetch(searchQuery).then(res => renderImage(res.hits))
+        if (searchQuery.length > 0) {
+            const response = await imageFetch(searchQuery)
+            const result = await renderImage(response.hits)
+            return result;
+        }
+    } catch (error) {
+        console.log(error);
     }
 }
 
