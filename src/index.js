@@ -1,4 +1,4 @@
 import './sass/main.scss';
-import * as basicLightbox from 'basiclightbox'
+import '@pnotify/core/BrightTheme.css';
 
 import './js/image-searcher'

@@ -1,3 +1,5 @@
+import { error } from '@pnotify/core';
+
 export const searchOptions = {
     BASE_URL: 'https://pixabay.com/api/',
     API_KEY: '22215457-d2e131747f34337528d5fbfaa',
@@ -15,7 +17,16 @@ export async function imageFetch(searchQuery) {
         &key=${searchOptions.API_KEY}`)
     const result = await response.json();
     return result;
-    } catch(error) {
-        console.log(error);
+    } catch {
+                error({
+            title: false,
+            text: 'Упс, что-то пошло не так. Попробуйте сделать новый запрос',
+            sticker: false,
+            maxTextHeight: null,
+            closerHover: false,
+            animation: 'fade',
+            mouseReset: false,
+            delay: 5000,
+    });
     }
 }

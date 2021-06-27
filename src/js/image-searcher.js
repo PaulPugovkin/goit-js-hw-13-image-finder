@@ -1,8 +1,9 @@
-import { imageFetch, searchOptions } from './fetcher'
+import { imageFetch, searchOptions } from './apiService'
 import debounce from 'lodash.debounce';
 import { refs } from '../js/refs'
 import * as basicLightbox from 'basiclightbox'
 import imageCardTmp from '../templates/image-card.hbs'
+import { error } from '@pnotify/core';
 
 let searchQuery = '';
 
@@ -18,8 +19,17 @@ async function onSearch(event) {
         searchOptions.PAGE_NUM = 1;
         
         markupRender();
-    } catch (error) {
-        console.log(error);
+    } catch {
+        error({
+            title: false,
+            text: 'Уточните ваш поиск',
+            sticker: false,
+            maxTextHeight: null,
+            closerHover: false,
+            animation: 'fade',
+            mouseReset: false,
+            delay: 5000,
+    });
     }
 }
 
@@ -27,8 +37,27 @@ async function onLoad() {
     try {
         searchOptions.PAGE_NUM += 1;
         markupRender();
-    } catch (error) {
-        console.log(error);
+        if (markupRender) {
+setTimeout(() => {
+            refs.gallery.scrollIntoView({
+                behavior: "smooth",
+                block: "end",
+                inline: "nearest"
+            })
+        }, 200);
+        }
+        
+    } catch {
+        error({
+            title: false,
+            text: 'Больше картинок по вашему запросу нет',
+            sticker: false,
+            maxTextHeight: null,
+            closerHover: false,
+            animation: 'fade',
+            mouseReset: false,
+            delay: 5000,
+    });
     }
 }
 
